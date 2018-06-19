@@ -1,16 +1,10 @@
-var SalsaDancer = function( top, left, timeBetweenSteps ) {
+var SalsaDancer = function(top, left, timeBetweenSteps, radius) {
 
-  this.radius = 50;
-  this.angularPosition = 0;
-  this.center = {
-    top: top,
-    left: left - this.radius
-  };
-  Dancer.call( this, top, left, timeBetweenSteps );
+  CircleDancer.call(this, top, left, timeBetweenSteps, radius);
 
 };
 
-SalsaDancer.prototype = Object.create(Dancer.prototype);
+SalsaDancer.prototype = Object.create(CircleDancer.prototype);
 SalsaDancer.prototype.constructor = SalsaDancer;
 
 // we plan to overwrite the step function below, but we still want the superclass step behavior to work,
@@ -21,15 +15,6 @@ SalsaDancer.prototype.step = function() {
   this.angularPosition += 0.5;
   this.angularPosition %= 2 * Math.PI;
 
-  var top = this.radius * Math.sin( this.angularPosition );
-  var left = this.radius * Math.cos( this.angularPosition );
-  top += this.center.top;
-  left += this.center.left;
-  
-  this.setPosition( top, left );
-
-};
-
-SalsaDancer.prototype.lineUp = function() {
-  this.center.top = 200;
+  this.updateLeft();
+  this.updateTop();
 };

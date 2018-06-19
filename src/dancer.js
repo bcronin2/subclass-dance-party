@@ -1,82 +1,76 @@
-// Creates and returns a new dancer object that can step
-var Dancer = function( top, left, timeBetweenSteps ) {
+var offset = 20;
 
+// Creates and returns a new dancer object that can step
+var Dancer = function(top, left, timeBetweenSteps, radius) {
   // use jQuery to create an HTML <span> tag
   this.$node = $('<span class="dancer"></span>');
-  
+
   this.timeBetweenSteps = timeBetweenSteps;
-  this.oldStep = this.step;  
-
-  this.setPosition( top, left );
+  this.radius = radius;
+  this.center = { top: top, left: left };
+  this.position = this.center;
+  this.animating = false;
   this.step();
-
-  // now that we have defined the dancer object, we can start setting up important parts of it by calling the methods we wrote
-  // this one sets the position to some random default point within the body
-
 };
 
 Dancer.prototype.step = function() {
-
-  // setTimeout( this.step.bind(this), this.timeBetweenSteps );
   var self = this;
-
-  setTimeout( function() {
+  setTimeout(function() {
     self.step();
-  }, this.timeBetweenSteps );
-
+  }, this.timeBetweenSteps);
 };
 
 Dancer.prototype.setPosition = function(top, left) {
-
-  this.position = { top: top, left: left };
-  this.$node.css(this.position);
-
+  if (!this.animating) {
+    this.position = { top: top, left: left };
+    this.$node.css(this.position);
+  }
 };
 
-Dancer.prototype.lineUp = function() {
-  this.setPosition( 200, this.position.left );
+Dancer.prototype.lineUp = function(top) {
+  this.center.top = top;
 };
 
-Dancer.prototype.follow = function( lead ) {
+Dancer.prototype.follow = function(lead) {
   var self = this;
-  var newPosition = { top: lead.position.top, left: lead.position.left + 20 };
-  
-  self.$node.animate( newPosition, self.timeBetweenSteps); 
+  var newPosition = { top: lead.position.top, left: lead.position.left + offset };
 
+  self.moveTo(newPosition.top, newPosition.left);
   self.timeBetweenSteps = lead.timeBetweenSteps;
-  self.step = function () {
-    // inheriting the propertys needed
-    Dancer.prototype.step.call( self );
-    self.followPosition( lead );    
 
-    // setInterval( this.followPosition.bind(this, lead), 
-    //   this.timeBetweenSteps );
+  self.step = function() {
+    Dancer.prototype.step.call(self);
+    self.followPosition(lead);
   };
-
 };
 
 Dancer.prototype.unfollow = function() {
-  var self = this;
-  self.step = self.__proto__.step;
-  self.timeBetweenSteps = Math.random() * 1000;
-  var top = $("body").height() * Math.random();
-  var left = $("body").width() * Math.random();
-  self.$node.animate( { top: top, left: left }, self.timeBetweenSteps, function() {
-    self.setPosition(top, left);
-  }); 
+  this.step = this.__proto__.step;
+  this.timeBetweenSteps = Math.random() * 1000;
+  this.reposition();
 };
 
-Dancer.prototype.followPosition = function( lead ) {
-  // this.position = { 
-  //   top: lead.position.top, 
-  //   left: lead.position.left + 20 
-  // };
-  this.setPosition( lead.position.top, lead.position.left + 20 );
+Dancer.prototype.followPosition = function(lead) {
+  this.setPosition(lead.position.top, lead.position.left + offset);
 };
-// var extend = function( dest, src ) {
-//   for (var key in src) {
-//     if ( !dest.hasOwnProperty( key ) ) {
-//       dest[key] = src[key];
-//     }
-//   }
-// }
+
+Dancer.prototype.reposition = function() {
+  var left = $('body').width() * Math.random();
+  var top = $('body').height() * Math.random();
+  var self = this;
+
+  self.animating = true;
+  this.moveTo(top, left + this.radius);
+  this.center = { top: top, left: left };
+};
+
+Dancer.prototype.moveTo = function(top, left) {
+  var self = this;
+  this.animating = true;
+  self.$node.animate({ top: top, left: left }, self.timeBetweenSteps, 
+    function() {
+      self.animating = false;
+    }
+  );
+
+};

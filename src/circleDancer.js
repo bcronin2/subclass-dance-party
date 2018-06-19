@@ -1,35 +1,22 @@
-var CircleDancer = function( top, left, timeBetweenSteps ) {
-
-  this.radius = 50;
+var CircleDancer = function(top, left, timeBetweenSteps, radius) {
   this.angularPosition = 0;
-  this.center = {
-    top: top,
-    left: left - this.radius
-  };
-  Dancer.call( this, top, left, timeBetweenSteps );
-
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
 };
 
 CircleDancer.prototype = Object.create(Dancer.prototype);
 CircleDancer.prototype.constructor = CircleDancer;
 
-// we plan to overwrite the step function below, but we still want the superclass step behavior to work,
-// so we must keep a copy of the old version of this function
-// CircleDancer.prototype.step = function() {
-//   Dancer.prototype.step.call(this);
+CircleDancer.prototype.updateLeft = function() {
+  var left = this.radius * Math.cos(this.angularPosition) + this.center.left;
+  this.setPosition(this.position.top, left);
+};
 
-//   this.angularPosition += 0.5;
-//   this.angularPosition %= 2 * Math.PI;
+CircleDancer.prototype.updateTop = function() {
+  var top = this.radius * Math.sin(this.angularPosition) + this.center.top;
+  this.setPosition(top, this.position.left);
+};
 
-//   var top = this.radius * Math.sin( this.angularPosition );
-//   var left = this.radius * Math.cos( this.angularPosition );
-//   top += this.center.top;
-//   left += this.center.left;
-  
-//   this.setPosition( top, left );
-
-// };
-
-// CircleDancer.prototype.lineUp = function() {
-//   this.center.top = 200;
-// };
+CircleDancer.prototype.reposition = function() {
+  this.angularPosition = 0;
+  Dancer.prototype.reposition.call(this);
+};
