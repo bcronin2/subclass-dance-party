@@ -2,7 +2,7 @@ var offset = 20;
 
 // Creates and returns a new dancer object that can step
 var Dancer = function(top, left, timeBetweenSteps, radius) {
-  this.$node = $('<span class="dancer"></span>');
+  this.$node = $('<img class="dancer" src="' + getRandomImage() + '">');
 
   this.timeBetweenSteps = timeBetweenSteps;
   this.radius = radius;
@@ -28,7 +28,6 @@ Dancer.prototype.setPosition = function(top, left) {
 
 Dancer.prototype.pairWith = function(lead) {
   var self = this;
-  // this.unpair();
   var newPosition = { top: lead.position.top, left: lead.position.left + offset };
 
   self.moveTo(newPosition.top, newPosition.left, self.play);

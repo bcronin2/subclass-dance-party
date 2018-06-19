@@ -1,5 +1,6 @@
 body, html{
   height:100%;
+  background:url('./slowdance.jpeg') no-repeat center center fixed;
 }
 body{
   margin: 0px;
@@ -9,9 +10,14 @@ body{
 body, a:link, a:visited, a:active{
   color: lightblue;
 }
-.title, .addDancerButton{
+.title, .navButton{
   padding:5px 12px;
-  float:right;
+}
+.navButton{
+  background-color: royalblue;
+}
+.navButton:hover{
+  color:blue;
 }
 .topbar{
   height:32px;
@@ -21,7 +27,11 @@ body, a:link, a:visited, a:active{
   background-color: #777;
 }
 .dancer{
-  border:10px solid red;
+  height:5%;
+  /*border:10px solid red;*/
   border-radius:10px;
   position:absolute;
+}
+.unpairDancersButton, .scatterDancersButton{
+  display:none;
 }

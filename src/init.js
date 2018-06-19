@@ -38,9 +38,19 @@ $(document).ready(function() {
       var left = i * $('body').width() / dancers.length;
       dancer.moveTo(500, left, dancer.pause);
     });
+    $(this).hide();
+    $('.scatterDancersButton').show();
   });
 
-  $('.pairDancers').on('click', function(event) {
+  $('.scatterDancersButton').on('click', function(event) {
+    dancers.forEach(function(dancer) {
+      dancer.scatter();
+    });
+    $(this).hide();
+    $('.lineUpDancersButton').show();
+  });
+
+  $('.pairDancersButton').on('click', function(event) {
     var unpaired = dancers.concat();  
 
     while (unpaired.length) {
@@ -63,16 +73,16 @@ $(document).ready(function() {
       
     }
     $(this).hide();
-    $('.unpairDancers').show();
+    $('.unpairDancersButton').show();
 
   });
 
-  $('.unpairDancers').on('click', function(event) {
+  $('.unpairDancersButton').on('click', function(event) {
     dancers.forEach(function(dancer) {
       dancer.unpair();
     });
     $(this).hide();
-    $('.pairDancers').show();
+    $('.pairDancersButton').show();
   });
   
 });
