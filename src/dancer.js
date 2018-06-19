@@ -28,6 +28,7 @@ Dancer.prototype.setPosition = function(top, left) {
 
 Dancer.prototype.pairWith = function(lead) {
   var self = this;
+  // this.unpair();
   var newPosition = { top: lead.position.top, left: lead.position.left + offset };
 
   self.moveTo(newPosition.top, newPosition.left, self.play);
@@ -69,4 +70,9 @@ Dancer.prototype.pause = function() {
 
 Dancer.prototype.play = function() {
   this.canUpdate = true;
+};
+
+Dancer.prototype.getDistanceTo = function(dancer) {
+  return Math.pow(this.position.top - dancer.position.top, 2)
+    + Math.pow(this.position.left - dancer.position.left, 2);
 };

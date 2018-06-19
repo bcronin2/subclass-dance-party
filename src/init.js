@@ -26,7 +26,7 @@ $(document).ready(function() {
     var position = getRandomPosition();
 
     var dancer = new dancerMakerFunction(position.top, 
-      position.left, getRandomSpeed(), defaultRadius);
+      position.left, getRandomSpeed(), env.defaultRadius);
 
     dancers.push(dancer);
     
@@ -34,9 +34,45 @@ $(document).ready(function() {
   });
 
   $('.lineUpDancersButton').on('click', function(event) {
-    dancers.forEach(function(dancer) {
-      
-      dancer.moveTo(500, dancer.position.left, dancer.pause);
+    dancers.forEach(function(dancer, i, dancers) {
+      var left = i * $('body').width() / dancers.length;
+      dancer.moveTo(500, left, dancer.pause);
     });
   });
+
+  $('.pairDancers').on('click', function(event) {
+    var unpaired = dancers.concat();  
+
+    while (unpaired.length) {
+      let nextDancer = unpaired.pop();
+      let minDistance = Number.POSITIVE_INFINITY;
+      let pairIndex;
+      
+      for (let i = 0; i < unpaired.length; i++) {
+        var distance = nextDancer.getDistanceTo(unpaired[i]);
+        if (distance < minDistance) {
+          minDistance = distance;
+          pairIndex = i;
+        }
+      }
+      
+      if (pairIndex >= 0) {
+        unpaired[pairIndex].pairWith(nextDancer);
+        unpaired.splice( pairIndex, 1);
+      }
+      
+    }
+    $(this).hide();
+    $('.unpairDancers').show();
+
+  });
+
+  $('.unpairDancers').on('click', function(event) {
+    dancers.forEach(function(dancer) {
+      dancer.unpair();
+    });
+    $(this).hide();
+    $('.pairDancers').show();
+  });
+  
 });
