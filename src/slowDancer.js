@@ -1,6 +1,6 @@
-var SlowDancer = function(top, left, timeBetweenSteps, radius) {
+var SlowDancer = function(top, left, timePerCycle, radius) {
 
-  CircleDancer.call(this, top, left, timeBetweenSteps, radius);
+  CircleDancer.call(this, top, left, timePerCycle, radius);
 
 };
 
@@ -12,8 +12,6 @@ SlowDancer.prototype.constructor = SlowDancer;
 SlowDancer.prototype.step = function() {
   Dancer.prototype.step.call(this);
 
-  this.angularPosition += 0.5;
-  this.angularPosition %= 2 * Math.PI;
-
+  this.updateAngle();
   this.updateLeft();
 };

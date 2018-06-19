@@ -9,7 +9,7 @@ var Dancer = function(top, left, timeBetweenSteps, radius) {
   this.radius = radius;
   this.center = { top: top, left: left };
   this.position = this.center;
-  this.animating = false;
+  this.canUpdate = true;
   this.step();
 };
 
@@ -21,7 +21,7 @@ Dancer.prototype.step = function() {
 };
 
 Dancer.prototype.setPosition = function(top, left) {
-  if (!this.animating) {
+  if (this.canUpdate) {
     this.position = { top: top, left: left };
     this.$node.css(this.position);
   }
@@ -31,7 +31,7 @@ Dancer.prototype.lineUp = function(top) {
   this.center.top = top;
 };
 
-Dancer.prototype.follow = function(lead) {
+Dancer.prototype.pairWith = function(lead) {
   var self = this;
   var newPosition = { top: lead.position.top, left: lead.position.left + offset };
 
@@ -44,32 +44,31 @@ Dancer.prototype.follow = function(lead) {
   };
 };
 
-Dancer.prototype.unfollow = function() {
+Dancer.prototype.unpair = function() {
   this.step = this.__proto__.step;
   this.timeBetweenSteps = Math.random() * 1000;
-  this.reposition();
+  this.scatter();
 };
 
 Dancer.prototype.followPosition = function(lead) {
   this.setPosition(lead.position.top, lead.position.left + offset);
 };
 
-Dancer.prototype.reposition = function() {
+Dancer.prototype.scatter = function() {
   var left = $('body').width() * Math.random();
   var top = $('body').height() * Math.random();
   var self = this;
 
-  self.animating = true;
   this.moveTo(top, left + this.radius);
   this.center = { top: top, left: left };
 };
 
 Dancer.prototype.moveTo = function(top, left) {
   var self = this;
-  this.animating = true;
+  this.canUpdate = false;
   self.$node.animate({ top: top, left: left }, self.timeBetweenSteps, 
     function() {
-      self.animating = false;
+      self.canUpdate = true;
     }
   );
 

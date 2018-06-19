@@ -1,6 +1,6 @@
-var SalsaDancer = function(top, left, timeBetweenSteps, radius) {
+var SalsaDancer = function(top, left, timePerCycle, radius) {
 
-  CircleDancer.call(this, top, left, timeBetweenSteps, radius);
+  CircleDancer.call(this, top, left, timePerCycle, radius);
 
 };
 
@@ -12,9 +12,7 @@ SalsaDancer.prototype.constructor = SalsaDancer;
 SalsaDancer.prototype.step = function() {
   Dancer.prototype.step.call(this);
 
-  this.angularPosition += 0.5;
-  this.angularPosition %= 2 * Math.PI;
-
+  this.updateAngle();
   this.updateLeft();
   this.updateTop();
 };

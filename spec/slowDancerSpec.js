@@ -24,14 +24,15 @@ describe('slowDancer', function() {
 
   describe('dance', function() {
     it('should call step at least once per second', function() {
+      var interval = timeBetweenSteps / 12;
+
       sinon.spy(slowDancer, 'step');
       expect(slowDancer.step.callCount).to.be.equal(0);
-      clock.tick(timeBetweenSteps); // ? it seems an extra tick is necessary...
-      clock.tick(timeBetweenSteps);
+      clock.tick(interval);
 
       expect(slowDancer.step.callCount).to.be.equal(1);
 
-      clock.tick(timeBetweenSteps);
+      clock.tick(interval);
       expect(slowDancer.step.callCount).to.be.equal(2);
     });
   });

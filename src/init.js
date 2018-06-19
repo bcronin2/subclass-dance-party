@@ -1,6 +1,7 @@
 $(document).ready(function() {
   window.dancers = [];
 
+
   $('.addDancerButton').on('click', function(event) {
     /* This function sets up the click handlers for the create-dancer
      * buttons on dancefloor.html. You should only need to make one small change to it.
@@ -22,14 +23,10 @@ $(document).ready(function() {
 
     // make a dancer with a random position
 
-    var radius = Math.floor(Math.random() * 80);
+    var top = ($("body").height() - 2 * 20) * Math.random() + 20;
+    var left = ($("body").width() - 2 * 20) * Math.random() + 20;
 
-    var dancer = new dancerMakerFunction(
-      ($("body").height() - 2 * radius) * Math.random() + radius,
-      ($("body").width() - 2 * radius) * Math.random() + radius,
-      Math.random() * 1000, 
-      radius
-    );
+    var dancer = new dancerMakerFunction(top, left, Math.random() * 1000, 20);
 
     dancers.push(dancer);
     
