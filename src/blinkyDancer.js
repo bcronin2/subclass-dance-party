@@ -13,3 +13,11 @@ BlinkyDancer.prototype.step = function() {
   Dancer.prototype.step.call(this);
   this.$node.toggle();
 };
+
+
+BlinkyDancer.prototype.follow = function( lead ) {
+
+  this.$node.show();
+  Dancer.prototype.follow.call( this, lead );
+
+};
