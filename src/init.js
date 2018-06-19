@@ -1,6 +1,10 @@
 $(document).ready(function() {
   window.dancers = [];
 
+  var $lineUpDancers = $('.lineUpDancersButton');
+  var $scatterDancers = $('.scatterDancersButton');
+  var $pairDancers = $('.pairDancersButton');
+  var $unpairDancers = $('.unpairDancersButton');
 
   $('.addDancerButton').on('click', function(event) {
     /* This function sets up the click handlers for the create-dancer
@@ -25,64 +29,103 @@ $(document).ready(function() {
 
     var position = getRandomPosition();
 
+
     var dancer = new dancerMakerFunction(position.top, 
       position.left, getRandomSpeed(), env.defaultRadius);
 
+    // dancer.dancerId = dancers.length;
+
     dancers.push(dancer);
+
     
-    $('body').append(dancer.$node);
+    
+    $('#dancers').append(dancer.$node);
+
+    if (dancers.length > 1) {
+      $('.disabled').removeClass('disabled');
+    }
   });
 
-  $('.lineUpDancersButton').on('click', function(event) {
-    dancers.forEach(function(dancer, i, dancers) {
-      var left = i * $('body').width() / dancers.length;
-      dancer.moveTo(500, left, dancer.pause);
-    });
-    $(this).hide();
-    $('.scatterDancersButton').show();
+  $lineUpDancers.on('click', function(event) {
+    if (dancers.length > 1) {
+      dancers.forEach(function(dancer, i, dancers) {
+        var left = i * $('body').width() / dancers.length;
+        dancer.moveTo(500, left, dancer.pause);
+      });
+      $(this).hide();
+      $scatterDancers.show();
+      $pairDancers.show();
+      $unpairDancers.hide();
+    }
   });
 
-  $('.scatterDancersButton').on('click', function(event) {
+  $scatterDancers.on('click', function(event) {
     dancers.forEach(function(dancer) {
       dancer.scatter();
     });
     $(this).hide();
-    $('.lineUpDancersButton').show();
+    $lineUpDancers.show();
+    $pairDancers.show();
+    $unpairDancers.hide();
   });
 
-  $('.pairDancersButton').on('click', function(event) {
-    var unpaired = dancers.concat();  
+  $pairDancers.on('click', function(event) {
+    if (dancers.length > 1) {
+      var unpaired = dancers.concat();  
 
-    while (unpaired.length) {
-      let nextDancer = unpaired.pop();
-      let minDistance = Number.POSITIVE_INFINITY;
-      let pairIndex;
-      
-      for (let i = 0; i < unpaired.length; i++) {
-        var distance = nextDancer.getDistanceTo(unpaired[i]);
-        if (distance < minDistance) {
-          minDistance = distance;
-          pairIndex = i;
+      while (unpaired.length) {
+        let nextDancer = unpaired.pop();
+        let minDistance = Number.POSITIVE_INFINITY;
+        let pairIndex;
+        
+        for (let i = 0; i < unpaired.length; i++) {
+          var distance = nextDancer.getDistanceTo(unpaired[i]);
+          if (distance < minDistance) {
+            minDistance = distance;
+            pairIndex = i;
+          }
         }
+        
+        if (pairIndex >= 0) {
+          unpaired[pairIndex].pairWith(nextDancer);
+          unpaired.splice( pairIndex, 1);
+        }
+        
       }
-      
-      if (pairIndex >= 0) {
-        unpaired[pairIndex].pairWith(nextDancer);
-        unpaired.splice( pairIndex, 1);
-      }
-      
+      $(this).hide();
+      $unpairDancers.show();
     }
-    $(this).hide();
-    $('.unpairDancersButton').show();
-
   });
 
-  $('.unpairDancersButton').on('click', function(event) {
+  $unpairDancers.on('click', function(event) {
     dancers.forEach(function(dancer) {
-      dancer.unpair();
+      dancer.scatter();
     });
     $(this).hide();
-    $('.pairDancersButton').show();
+    $pairDancers.show();
+  });
+
+  $('#dancers').on('click', '.dancer', function(event) {
+    // move this dancer to center;
+    // form circle with all other dancers
+    // var top = 
+    var dancer = dancers[ $(this).data('id') ];
+    var radius = $('#dancers').width() / 3;
+    var center = { top: $('#dancers').height() / 2, left: $('#dancers').width() / 2 };
+    
+    var angle = 0;
+    dancers.forEach(function(circleDancer) {
+      if (circleDancer !== dancer) {
+        var top = radius * Math.sin(angle) + center.top;
+        var left = radius * Math.cos(angle) + center.left;
+        circleDancer.moveTo(top, left, dancer.pause);
+        angle += 2 * Math.PI / (dancers.length - 1);
+      }
+    });
+    dancer.moveTo(center.top, center.left, function() {
+      dancer.pause();
+      dancer.specialMove();
+    });
   });
   
 });

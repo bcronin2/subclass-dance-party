@@ -14,6 +14,7 @@ var getRandomImage = function() {
 };
 
 var env = {
+  offset: 20,
   defaultRadius: 20,
   slowSpeed: 1000,
   fastSpeed: 200,

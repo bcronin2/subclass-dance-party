@@ -1,8 +1,9 @@
-var offset = 20;
-
 // Creates and returns a new dancer object that can step
 var Dancer = function(top, left, timeBetweenSteps, radius) {
-  this.$node = $('<img class="dancer" src="' + getRandomImage() + '">');
+  this.dancerId = window.dancers.length;
+  this.$node = $('<img class="dancer" ' +
+      'src="' + getRandomImage() + '"' +
+      ' data-id="' + this.dancerId + '">');
 
   this.timeBetweenSteps = timeBetweenSteps;
   this.radius = radius;
@@ -28,7 +29,7 @@ Dancer.prototype.setPosition = function(top, left) {
 
 Dancer.prototype.pairWith = function(lead) {
   var self = this;
-  var newPosition = { top: lead.position.top, left: lead.position.left + offset };
+  var newPosition = { top: lead.position.top, left: lead.position.left + env.offset };
 
   self.moveTo(newPosition.top, newPosition.left, self.play);
   self.timeBetweenSteps = lead.timeBetweenSteps;
@@ -39,28 +40,24 @@ Dancer.prototype.pairWith = function(lead) {
   };
 };
 
-Dancer.prototype.unpair = function() {
-  this.step = this.__proto__.step;
-  this.timeBetweenSteps = getRandomSpeed();
-  this.scatter();
-};
-
-Dancer.prototype.followPosition = function(lead) {
-  this.setPosition(lead.position.top, lead.position.left + offset);
-};
-
 Dancer.prototype.scatter = function() {
   var newPosition = getRandomPosition();
+
+  this.step = this.__proto__.step;
+  this.timeBetweenSteps = getRandomSpeed();
   this.moveTo(newPosition.top, newPosition.left + this.radius, this.play.bind(this));
 };
 
+Dancer.prototype.followPosition = function(lead) {
+  this.setPosition(lead.position.top, lead.position.left + env.offset);
+};
+
 Dancer.prototype.moveTo = function(top, left, cb) {
-  var self = this;
-  self.pause();
+  this.pause();
 
-  self.center = self.position = { top: top, left: left };
+  this.center = this.position = { top: top, left: left };
 
-  self.$node.animate({ top: top, left: left }, self.timeBetweenSteps, cb.bind(self));
+  this.$node.animate({ top: top, left: left }, this.timeBetweenSteps, cb.bind(this));
 };
 
 Dancer.prototype.pause = function() {
@@ -75,3 +72,30 @@ Dancer.prototype.getDistanceTo = function(dancer) {
   return Math.pow(this.position.top - dancer.position.top, 2)
     + Math.pow(this.position.left - dancer.position.left, 2);
 };
+
+Dancer.prototype.specialMove = function() {
+  // var angle = 0;
+  // this.$node.animate({ 'transform': 'rotate(360deg)' });
+  // while (angle < 360) {
+  //   // setTimeout((function(angle) {
+  //   //   return function() {
+  //       node.css({ 'transform': 'rotate(' + angle + 'deg)' });
+  //     // };
+  //   // }( angle )), 50);
+  //   angle += 60;
+  // }
+  var $node = this.$node;
+
+  rotate = function(degree) {
+
+    // For webkit browsers: e.g. Chrome
+    $node.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
+    // For Mozilla browser: e.g. Firefox
+    $node.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
+
+    // Animate rotation with a recursive call
+    setTimeout(function() { degree < 360 && rotate(degree + 10); }, 65);
+  };
+  rotate(0);
+};
+
