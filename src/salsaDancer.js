@@ -17,11 +17,9 @@ SalsaDancer.prototype.constructor = SalsaDancer;
 // so we must keep a copy of the old version of this function
 SalsaDancer.prototype.step = function() {
   Dancer.prototype.step.call(this);
-  // this.$node.toggle();
 
   this.angularPosition += 0.5;
   this.angularPosition %= 2 * Math.PI;
-
 
   var top = this.radius * Math.sin( this.angularPosition );
   var left = this.radius * Math.cos( this.angularPosition );
@@ -30,4 +28,8 @@ SalsaDancer.prototype.step = function() {
   
   this.setPosition( top, left );
 
+};
+
+SalsaDancer.prototype.lineUp = function() {
+  this.center.top = 200;
 };
