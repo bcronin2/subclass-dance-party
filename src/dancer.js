@@ -2,7 +2,6 @@ var offset = 20;
 
 // Creates and returns a new dancer object that can step
 var Dancer = function(top, left, timeBetweenSteps, radius) {
-  // use jQuery to create an HTML <span> tag
   this.$node = $('<span class="dancer"></span>');
 
   this.timeBetweenSteps = timeBetweenSteps;
@@ -27,15 +26,11 @@ Dancer.prototype.setPosition = function(top, left) {
   }
 };
 
-Dancer.prototype.lineUp = function(top) {
-  this.center.top = top;
-};
-
 Dancer.prototype.pairWith = function(lead) {
   var self = this;
   var newPosition = { top: lead.position.top, left: lead.position.left + offset };
 
-  self.moveTo(newPosition.top, newPosition.left);
+  self.moveTo(newPosition.top, newPosition.left, self.play);
   self.timeBetweenSteps = lead.timeBetweenSteps;
 
   self.step = function() {
@@ -46,7 +41,7 @@ Dancer.prototype.pairWith = function(lead) {
 
 Dancer.prototype.unpair = function() {
   this.step = this.__proto__.step;
-  this.timeBetweenSteps = Math.random() * 1000;
+  this.timeBetweenSteps = getRandomSpeed();
   this.scatter();
 };
 
@@ -55,21 +50,23 @@ Dancer.prototype.followPosition = function(lead) {
 };
 
 Dancer.prototype.scatter = function() {
-  var left = $('body').width() * Math.random();
-  var top = $('body').height() * Math.random();
-  var self = this;
-
-  this.moveTo(top, left + this.radius);
-  this.center = { top: top, left: left };
+  var newPosition = getRandomPosition();
+  this.moveTo(newPosition.top, newPosition.left + this.radius, this.play.bind(this));
 };
 
-Dancer.prototype.moveTo = function(top, left) {
+Dancer.prototype.moveTo = function(top, left, cb) {
   var self = this;
-  this.canUpdate = false;
-  self.$node.animate({ top: top, left: left }, self.timeBetweenSteps, 
-    function() {
-      self.canUpdate = true;
-    }
-  );
+  self.pause();
 
+  self.center = self.position = { top: top, left: left };
+
+  self.$node.animate({ top: top, left: left }, self.timeBetweenSteps, cb.bind(self));
+};
+
+Dancer.prototype.pause = function() {
+  this.canUpdate = false;
+};
+
+Dancer.prototype.play = function() {
+  this.canUpdate = true;
 };

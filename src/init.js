@@ -23,10 +23,10 @@ $(document).ready(function() {
 
     // make a dancer with a random position
 
-    var top = ($("body").height() - 2 * 20) * Math.random() + 20;
-    var left = ($("body").width() - 2 * 20) * Math.random() + 20;
+    var position = getRandomPosition();
 
-    var dancer = new dancerMakerFunction(top, left, Math.random() * 1000, 20);
+    var dancer = new dancerMakerFunction(position.top, 
+      position.left, getRandomSpeed(), defaultRadius);
 
     dancers.push(dancer);
     
@@ -35,7 +35,8 @@ $(document).ready(function() {
 
   $('.lineUpDancersButton').on('click', function(event) {
     dancers.forEach(function(dancer) {
-      dancer.lineUp(500);
+      
+      dancer.moveTo(500, dancer.position.left, dancer.pause);
     });
   });
 });

@@ -1,14 +1,10 @@
 var JumpyDancer = function(top, left, timeBetweenSteps, radius) {
-
   Dancer.call(this, top, left, timeBetweenSteps, radius);
-
 };
 
 JumpyDancer.prototype = Object.create(Dancer.prototype);
 JumpyDancer.prototype.constructor = JumpyDancer;
 
-// we plan to overwrite the step function below, but we still want the superclass step behavior to work,
-// so we must keep a copy of the old version of this function
 JumpyDancer.prototype.step = function() {
   Dancer.prototype.step.call(this);
 
@@ -20,8 +16,6 @@ JumpyDancer.prototype.step = function() {
 };
 
 JumpyDancer.prototype.follow = function( lead ) {
-
   this.$node.show();
   Dancer.prototype.follow.call( this, lead );
-
 };
