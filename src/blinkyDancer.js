@@ -1,6 +1,7 @@
 var BlinkyDancer = function( top, left, timeBetweenSteps ) {
 
   Dancer.call(this, top, left, timeBetweenSteps);
+  this.setPosition(this.center.top, this.center.left);
 
 };
 
@@ -11,8 +12,6 @@ BlinkyDancer.prototype.constructor = BlinkyDancer;
 // so we must keep a copy of the old version of this function
 BlinkyDancer.prototype.step = function() {
   Dancer.prototype.step.call(this);
-
-  this.setPosition(this.center.top, this.center.left);
   this.$node.toggle();
 };
 

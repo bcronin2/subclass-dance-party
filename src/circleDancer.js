@@ -11,14 +11,14 @@ CircleDancer.prototype.updateAngle = function() {
   this.angularPosition %= 2 * Math.PI;
 };
 
-CircleDancer.prototype.updateLeft = function() {
-  var left = this.radius * Math.cos(this.angularPosition) + this.center.left;
-  this.setPosition(this.position.top, left);
-};
-
 CircleDancer.prototype.updateTop = function() {
   var top = this.radius * Math.sin(this.angularPosition) + this.center.top;
   this.setPosition(top, this.position.left);
+};
+
+CircleDancer.prototype.updateLeft = function() {
+  var left = this.radius * Math.cos(this.angularPosition) + this.center.left;
+  this.setPosition(this.position.top, left);
 };
 
 CircleDancer.prototype.scatter = function() {
