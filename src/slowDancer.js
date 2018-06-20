@@ -1,12 +1,12 @@
-var SlowDancer = function(top, left, timePerCycle, radius) {
-  CircleDancer.call(this, top, left, timePerCycle, radius);
+var SlowDancer = function(top, left, timeBetweenSteps, radius) {
+  CircleDancer.call(this, top, left, timeBetweenSteps, radius, 'slow');
 };
 
 SlowDancer.prototype = Object.create(CircleDancer.prototype);
 SlowDancer.prototype.constructor = SlowDancer;
 
 SlowDancer.prototype.step = function() {
-  Dancer.prototype.step.call(this);
+  CircleDancer.prototype.step.call(this);
 
   this.updateAngle();
   this.updateLeft();

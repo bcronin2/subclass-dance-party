@@ -1,5 +1,5 @@
 var JumpyDancer = function(top, left, timeBetweenSteps, radius) {
-  Dancer.call(this, top, left, timeBetweenSteps, radius);
+  Dancer.call(this, top, left, timeBetweenSteps, radius, 'jumpy');
 };
 
 JumpyDancer.prototype = Object.create(Dancer.prototype);

@@ -1,10 +1,15 @@
-var CircleDancer = function(top, left, timePerCycle, radius) {
+var CircleDancer = function(top, left, timeBetweenSteps, radius, type) {
   this.angularPosition = 0;
-  Dancer.call(this, top, left, timePerCycle / 12, radius);
+  this.setTimeBetweenSteps(timeBetweenSteps);
+  Dancer.call(this, top, left, timeBetweenSteps, radius, type);
 };
 
 CircleDancer.prototype = Object.create(Dancer.prototype);
 CircleDancer.prototype.constructor = CircleDancer;
+
+CircleDancer.prototype.setTimeBetweenSteps = function(time) {
+  this.timeBetweenSteps = time / 12;
+};
 
 CircleDancer.prototype.updateAngle = function() {
   this.angularPosition += Math.PI / 6;

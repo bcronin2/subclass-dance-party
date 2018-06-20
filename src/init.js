@@ -1,55 +1,41 @@
 $(document).ready(function() {
   window.dancers = [];
-
+    
+  var $dancers = $('#dancers');
   var $lineUpDancers = $('.lineUpDancersButton');
   var $scatterDancers = $('.scatterDancersButton');
   var $pairDancers = $('.pairDancersButton');
   var $unpairDancers = $('.unpairDancersButton');
+  var $deleteDancers = $('.deleteDancersButton');
 
   $('.addDancerButton').on('click', function(event) {
-    /* This function sets up the click handlers for the create-dancer
-     * buttons on dancefloor.html. You should only need to make one small change to it.
-     * As long as the "data-dancer-maker-function-name" attribute of a
-     * class="addDancerButton" DOM node matches one of the names of the
-     * maker functions available in the global scope, clicking that node
-     * will call the function to make the dancer.
-     */
-
-    /* dancerMakerFunctionName is a string which must match
-     * one of the dancer maker functions available in global scope.
-     * A new object of the given type will be created and added
-     * to the stage.
-     */
     var dancerMakerFunctionName = $(this).data('dancer-maker-function-name');
 
     // get the maker function for the kind of dancer we're supposed to make
     var dancerMakerFunction = window[dancerMakerFunctionName];
 
     // make a dancer with a random position
-
     var position = getRandomPosition();
 
-
     var dancer = new dancerMakerFunction(position.top, 
-      position.left, getRandomSpeed(), env.defaultRadius);
-
-    // dancer.dancerId = dancers.length;
+      position.left, getRandomSpeed(), env.radius);
 
     dancers.push(dancer);
-
-    
-    
+  
     $('#dancers').append(dancer.$node);
 
+    $deleteDancers.removeClass('disabled');
     if (dancers.length > 1) {
-      $('.disabled').removeClass('disabled');
+      $lineUpDancers.removeClass('disabled');
+      $pairDancers.removeClass('disabled');
     }
   });
 
   $lineUpDancers.on('click', function(event) {
+    var adjustedWidth = $('body').width() - 2 * env.radius;
     if (dancers.length > 1) {
       dancers.forEach(function(dancer, i, dancers) {
-        var left = i * $('body').width() / dancers.length;
+        var left = i * adjustedWidth / dancers.length + env.radius;
         dancer.moveTo(500, left, dancer.pause);
       });
       $(this).hide();
@@ -89,6 +75,7 @@ $(document).ready(function() {
         if (pairIndex >= 0) {
           unpaired[pairIndex].pairWith(nextDancer);
           unpaired.splice( pairIndex, 1);
+          nextDancer.play();
         }
         
       }
@@ -105,20 +92,23 @@ $(document).ready(function() {
     $pairDancers.show();
   });
 
-  $('#dancers').on('click', '.dancer', function(event) {
-    // move this dancer to center;
-    // form circle with all other dancers
-    // var top = 
+  $deleteDancers.on('click', function(event) {
+    $('.dancer').remove();
+    window.dancers = [];
+    resetButtons();
+  });
+
+  $dancers.on('click', '.dancer', function(event) {
     var dancer = dancers[ $(this).data('id') ];
-    var radius = $('#dancers').width() / 3;
-    var center = { top: $('#dancers').height() / 2, left: $('#dancers').width() / 2 };
+    var radius = Math.min($('body').width(), $('body').height()) / 3;
+    var center = { top: $('body').height() / 2, left: $('body').width() / 2 };
     
     var angle = 0;
     dancers.forEach(function(circleDancer) {
       if (circleDancer !== dancer) {
         var top = radius * Math.sin(angle) + center.top;
         var left = radius * Math.cos(angle) + center.left;
-        circleDancer.moveTo(top, left, dancer.pause);
+        circleDancer.moveTo(top, left, circleDancer.pause);
         angle += 2 * Math.PI / (dancers.length - 1);
       }
     });
@@ -127,5 +117,16 @@ $(document).ready(function() {
       dancer.specialMove();
     });
   });
+
+  var resetButtons = function() {
+    $lineUpDancers.show();
+    $pairDancers.show();
+    $unpairDancers.hide();
+    $scatterDancers.hide();
+  
+    $lineUpDancers.addClass('disabled');
+    $pairDancers.addClass('disabled');
+    $deleteDancers.addClass('disabled');
+  };
   
 });

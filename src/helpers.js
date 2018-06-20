@@ -1,22 +1,25 @@
 
 var getRandomPosition = function() {
-  var top = ($('body').height() - 2 * 20) * Math.random() + 20;
-  var left = ($('body').width() - 2 * 20) * Math.random() + 20;
+  var top = getRandomNumberBetween(6 * env.radius, $('body').height() - 5 * env.radius);
+  var left = getRandomNumberBetween(6 * env.radius, $('body').width() - 5 * env.radius);
   return { top: top, left: left };
 };
 
 var getRandomSpeed = function() {
-  return 1000 + Math.random() * 2000;
+  return Math.random() * 1000;
 };
 
-var getRandomImage = function() {
-  return './' + env.dancerImages[Math.floor(Math.random() * env.dancerImages.length)];
+var getRandomNumberBetween = function(min, max) {
+  return Math.random() * (max - min) + min;
 };
 
 var env = {
-  offset: 20,
-  defaultRadius: 20,
-  slowSpeed: 1000,
-  fastSpeed: 200,
-  dancerImages: ['homer.gif', 'brianPBJ.gif', 'mario.gif']
+  radius: 30,
+  offset: 30,
+  dancerImages: { 
+    blinky: './assets/mario.gif', 
+    jumpy: './assets/vader.gif',
+    slow: './assets/brian.gif',
+    salsa: './assets/homer.gif'
+  }
 };
