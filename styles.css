@@ -3,7 +3,7 @@ body, html{
 }
 body{
   margin:0px;
-  background-image:url('./assets/defaultfloor.jpg');
+  background-image:url('./assets/defaultfloor.png');
   background-repeat:no-repeat;
   background-size:cover;
   background-color:#444;
@@ -25,9 +25,10 @@ body, a:link, a:visited, a:active{
   justify-content:center;
   align-items:center;
   position:fixed;
-  height:32px;
+  height:48px;
   width:100%;
   background-color: #555;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .title, .navButton{
   padding:5px 12px;
@@ -56,7 +57,7 @@ body, a:link, a:visited, a:active{
   background-color:grey;
 }
 .dancer{
-  height:10%;
+  height:15%;
   /*border:10px solid red;*/
   border-radius:10px;
   position:absolute;

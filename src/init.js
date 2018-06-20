@@ -95,10 +95,11 @@ $(document).ready(function() {
   $deleteDancers.on('click', function(event) {
     $('.dancer').remove();
     window.dancers = [];
-    resetButtons();
+    initializeButtons();
   });
 
   $dancers.on('click', '.dancer', function(event) {
+    restoreDefaultButtons();
     var dancer = dancers[ $(this).data('id') ];
     var radius = Math.min($('body').width(), $('body').height()) / 3;
     var center = { top: $('body').height() / 2, left: $('body').width() / 2 };
@@ -118,15 +119,19 @@ $(document).ready(function() {
     });
   });
 
-  var resetButtons = function() {
-    $lineUpDancers.show();
-    $pairDancers.show();
-    $unpairDancers.hide();
-    $scatterDancers.hide();
+  var initializeButtons = function() {
+    restoreDefaultButtons();
   
     $lineUpDancers.addClass('disabled');
     $pairDancers.addClass('disabled');
     $deleteDancers.addClass('disabled');
   };
+
+  var restoreDefaultButtons = function() {
+    $lineUpDancers.show();
+    $pairDancers.show();
+    $unpairDancers.hide();
+    $scatterDancers.hide();
+  }; 
   
 });
