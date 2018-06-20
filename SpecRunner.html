@@ -4,6 +4,7 @@
   <title>Mocha Spec Runner</title>
   <link rel="stylesheet" href="lib/mocha/mocha.css">
   <script src="lib/jquery.js"></script>
+  <script src="src/helpers.js"></script>
   <script src="lib/mocha/mocha.js"></script>
   <script src="lib/chai/chai.js"></script>
   <script src="lib/sinon/sinon.js"></script>
@@ -14,7 +15,9 @@
       window.mochaPhantomJS ? mochaPhantomJS.run() : mocha.run();
     });
   </script>
+  <script src="spec/dancerSpec.js"></script>
   <script src="spec/blinkyDancerSpec.js"></script>
+  <script src="spec/jumpyDancerSpec.js"></script>
   <script src="spec/salsaDancerSpec.js"></script>
   <script src="spec/slowDancerSpec.js"></script>  
   <script src="src/dancer.js"></script>

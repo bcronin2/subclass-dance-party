@@ -1,6 +1,6 @@
 // Creates and returns a new dancer object that can step
 var Dancer = function(top, left, timeBetweenSteps, radius, type) {
-  this.dancerId = window.dancers.length;
+  this.dancerId = (window.dancers || []).length;
   this.$node = $('<img class="dancer" ' +
     'src="' + env.dancerImages[type] + '"' +
     ' data-id="' + this.dancerId + '">');  
@@ -17,7 +17,7 @@ Dancer.prototype.step = function() {
   var self = this;
   setTimeout(function() {
     self.step();
-  }, this.timeBetweenSteps);
+  }, self.timeBetweenSteps);
 };
 
 Dancer.prototype.setTimeBetweenSteps = function(time) {
@@ -33,7 +33,7 @@ Dancer.prototype.setPosition = function(top, left) {
 
 Dancer.prototype.pairWith = function(lead) {
   var self = this;
-  var newPosition = { top: lead.position.top, left: lead.position.left + env.offset };
+  var newPosition = { top: lead.position.top, left: lead.position.left + this.radius };
 
   self.moveTo(newPosition.top, newPosition.left, self.play);
   self.timeBetweenSteps = lead.timeBetweenSteps;
@@ -53,7 +53,7 @@ Dancer.prototype.scatter = function() {
 };
 
 Dancer.prototype.followPosition = function(lead) {
-  this.setPosition(lead.position.top, lead.position.left + env.offset);
+  this.setPosition(lead.position.top, lead.position.left + this.radius);
 };
 
 Dancer.prototype.moveTo = function(top, left, cb) {
@@ -73,8 +73,9 @@ Dancer.prototype.play = function() {
 };
 
 Dancer.prototype.getDistanceTo = function(dancer) {
-  return Math.pow(this.position.top - dancer.position.top, 2)
+  var squaredDistance = Math.pow(this.position.top - dancer.position.top, 2)
     + Math.pow(this.position.left - dancer.position.left, 2);
+  return Math.sqrt(squaredDistance);
 };
 
 Dancer.prototype.specialMove = function() {

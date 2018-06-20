@@ -5,7 +5,7 @@ describe('salsaDancer', function() {
 
   beforeEach(function() {
     clock = sinon.useFakeTimers();
-    salsaDancer = new SalsaDancer(10, 20, timeBetweenSteps);
+    salsaDancer = new SalsaDancer(10, 20, timeBetweenSteps, 10);
   });
 
   it('should have a jQuery $node object', function() {
@@ -16,7 +16,6 @@ describe('salsaDancer', function() {
     var originalPosition = salsaDancer.position;
     salsaDancer.step();
     
-    clock.tick(timeBetweenSteps); // ? it seems an extra tick is necessary...
     clock.tick(timeBetweenSteps);
 
     expect( originalPosition ).to.not.be.eql( salsaDancer.position );
@@ -24,7 +23,7 @@ describe('salsaDancer', function() {
 
   describe('dance', function() {
     it('should call step at least once per second', function() {
-      var interval = timeBetweenSteps / 12;
+      var interval = timeBetweenSteps;
 
       sinon.spy(salsaDancer, 'step');
       expect(salsaDancer.step.callCount).to.be.equal(0);

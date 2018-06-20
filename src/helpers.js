@@ -6,7 +6,7 @@ var getRandomPosition = function() {
 };
 
 var getRandomSpeed = function() {
-  return Math.random() * 1000;
+  return Math.random() * 500 + 500;
 };
 
 var getRandomNumberBetween = function(min, max) {
@@ -14,8 +14,7 @@ var getRandomNumberBetween = function(min, max) {
 };
 
 var env = {
-  radius: 30,
-  offset: 30,
+  radius: 50,
   dancerImages: { 
     blinky: './assets/mario.gif', 
     jumpy: './assets/vader.gif',

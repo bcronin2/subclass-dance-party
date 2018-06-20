@@ -3,7 +3,7 @@ body, html{
 }
 body{
   margin:0px;
-  background-image:url('./assets/defaultfloor.png');
+  background-image:url('./assets/floor.png');
   background-repeat:no-repeat;
   background-size:cover;
   background-color:#444;
@@ -58,7 +58,6 @@ body, a:link, a:visited, a:active{
 }
 .dancer{
   height:15%;
-  /*border:10px solid red;*/
   border-radius:10px;
   position:absolute;
 }

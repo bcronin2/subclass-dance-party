@@ -1,4 +1,4 @@
-var BlinkyDancer = function( top, left, timeBetweenSteps ) {
+var BlinkyDancer = function(top, left, timeBetweenSteps) {
   Dancer.call(this, top, left, timeBetweenSteps, 0, 'blinky');
   this.setPosition(this.center.top, this.center.left);
 };
@@ -11,7 +11,7 @@ BlinkyDancer.prototype.step = function() {
   this.$node.toggle();
 };
 
-BlinkyDancer.prototype.follow = function( lead ) {
+BlinkyDancer.prototype.pairWith = function(lead) {
   Dancer.prototype.pairWith.call(this, lead);
   this.$node.show();
 };
