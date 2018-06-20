@@ -1,5 +1,5 @@
-var SalsaDancer = function(top, left, timeBetweenSteps, radius) {
-  CircleDancer.call(this, top, left, timeBetweenSteps, radius, 'salsa');
+var SalsaDancer = function(top, left, time, radius) {
+  CircleDancer.call(this, top, left, time, radius, 'salsa');
 };
 
 SalsaDancer.prototype = Object.create(CircleDancer.prototype);

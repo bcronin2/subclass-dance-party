@@ -1,5 +1,5 @@
-var SlowDancer = function(top, left, timeBetweenSteps, radius) {
-  CircleDancer.call(this, top, left, timeBetweenSteps, radius, 'slow');
+var SlowDancer = function(top, left, time, radius) {
+  CircleDancer.call(this, top, left, time, radius, 'slow');
 };
 
 SlowDancer.prototype = Object.create(CircleDancer.prototype);

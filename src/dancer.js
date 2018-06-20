@@ -1,11 +1,11 @@
 // Creates and returns a new dancer object that can step
-var Dancer = function(top, left, timeBetweenSteps, radius, type) {
+var Dancer = function(top, left, time, radius, type) {
   this.dancerId = (window.dancers || []).length;
   this.$node = $('<img class="dancer" ' +
     'src="' + env.dancerImages[type] + '"' +
     ' data-id="' + this.dancerId + '">');  
 
-  this.timeBetweenSteps = timeBetweenSteps;
+  this.setTimeBetweenSteps(time);
   this.radius = radius;
   this.center = { top: top, left: left };
   this.position = this.center;
@@ -82,13 +82,8 @@ Dancer.prototype.specialMove = function() {
   var $node = this.$node;
 
   rotate = function(degree) {
-
-    // For webkit browsers: e.g. Chrome
     $node.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
-    // For Mozilla browser: e.g. Firefox
     $node.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
-
-    // Animate rotation with a recursive call
     setTimeout(function() { degree < 360 && rotate(degree + 10); }, 65);
   };
   rotate(0);

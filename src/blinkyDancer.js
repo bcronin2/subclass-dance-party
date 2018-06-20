@@ -1,5 +1,5 @@
-var BlinkyDancer = function(top, left, timeBetweenSteps) {
-  Dancer.call(this, top, left, timeBetweenSteps, 0, 'blinky');
+var BlinkyDancer = function(top, left, time) {
+  Dancer.call(this, top, left, time, 0, 'blinky');
   this.setPosition(this.center.top, this.center.left);
 };
 
